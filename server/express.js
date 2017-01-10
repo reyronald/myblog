@@ -10,7 +10,7 @@ export default function(app) {
     /*
      * Middleware here...
      */
-     require('./config/authentication').default(app);
+     require('./auth').default(app);
 
     // Pretty json output in developemnt mode
     if (env === 'development') {

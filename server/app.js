@@ -4,6 +4,7 @@ import express from 'express';
 import http from 'http';
 import config from './environment';
 import mongoose from 'mongoose';
+
 mongoose.Promise = require('bluebird');
 
 // MongoDb
@@ -26,7 +27,7 @@ require('./routes').default(app);
 // Start server
 setImmediate(() => {
 	app.myblog = server.listen(config.port, config.ip, () => {
-    	console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+		console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
 	});
 });
 
