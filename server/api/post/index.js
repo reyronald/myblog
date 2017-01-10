@@ -44,7 +44,7 @@ router.post('/', (req, res) => Post.create(req.body)
 
 router.put('/:id', (req, res) => {
   if (req.body._id) {
-    delete req.body._id;
+    Reflect.deleteProperty(req.body, '_id');
   }
   return Post.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, upsert: true, setDefaultsOnInsert: true, runValidators: true }).exec()
     .then(entity => ok(res, entity, HttpStatus.OK))
@@ -53,13 +53,13 @@ router.put('/:id', (req, res) => {
 
 router.patch('/:id', (req, res) => {
   if (req.body._id) {
-    delete req.body._id;
+    Reflect.deleteProperty(req.body, '_id');
   }
   return Post.findById(req.params.id).exec()
     .then(handleIfNotFound(res))
     .then(entity => {
       try {
-        jsonpatch.apply(entity, req.body, true);
+        Reflect.apply(jsonpatch, req.body, true);
       } catch(err) {
         return Promise.reject(err);
       }
