@@ -10,12 +10,12 @@ mongoose.Promise = require('bluebird');
 // MongoDb
 mongoose.connect(config.mongo.uri, config.mongo.options);
 mongoose.connection.on('error', err => {
-	console.error('MongoDB connection error : ' + err);
-	process.exit(-1);
+  console.error(`MongoDB connection error : ${err}`);
+  process.exit(-1); // eslint-disable-line no-process-exit
 });
 
 if (config.seedDb) {
-	require('./config/seed');
+  require('./config/seed');
 }
 
 // Setup Server
@@ -26,9 +26,9 @@ require('./routes').default(app);
 
 // Start server
 setImmediate(() => {
-	app.myblog = server.listen(config.port, config.ip, () => {
-		console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-	});
+  app.myblog = server.listen(config.port, config.ip, () => {
+    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+  });
 });
 
 exports = module.expors = app;

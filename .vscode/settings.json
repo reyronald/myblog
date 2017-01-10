@@ -1,0 +1,7 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "window.zoomLevel": 1,
+    "editor.tabSize": 2,
+    "editor.renderWhitespace": "boundary",
+    "editor.detectIndentation": false
+}

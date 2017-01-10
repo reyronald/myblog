@@ -1,22 +1,23 @@
 'use strict';
+/*eslint no-process-env:0*/
 
 import path from 'path';
 import _ from 'lodash';
 
 const all = {
-	env: process.env.NODE_ENV,
+  env: process.env.NODE_ENV,
 
-	root: path.normalize(__dirname + '/../../..'),
+  root: path.normalize(path.join(__dirname, '/../../..')),
 
-	port: process.env.PORT || 9000,
+  port: process.env.PORT || 9000,
 
-	ip: process.env.IP || '0.0.0.0',
+  ip: process.env.IP || '0.0.0.0',
 
-	seedDb: false,
+  seedDb: false,
 
-	mongo: {},
+  mongo: {},
 };
 
 module.exports = _.merge(
-	all,
-	require(`./${process.env.NODE_ENV}.js`) || {});
+  all,
+  require(`./${process.env.NODE_ENV}.js`) || {});
