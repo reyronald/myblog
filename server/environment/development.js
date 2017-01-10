@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = {
-	seedDb: true,
+  seedDb: true,
 
-	mongo: {
-		uri: 'mongodb://localhost/myblog'
-	}
+  mongo: {
+    uri: 'mongodb://localhost/myblog'
+  }
 };

@@ -3,5 +3,7 @@
     "window.zoomLevel": 1,
     "editor.tabSize": 2,
     "editor.renderWhitespace": "boundary",
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "files.eol": "\r\n",
+    "files.insertFinalNewline": true
 }
