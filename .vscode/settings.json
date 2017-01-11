@@ -4,6 +4,6 @@
     "editor.tabSize": 2,
     "editor.renderWhitespace": "boundary",
     "editor.detectIndentation": false,
-    "files.eol": "\r\n",
+    "files.eol": "\n",
     "files.insertFinalNewline": true
 }
