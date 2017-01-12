@@ -47,3 +47,5 @@ jspm_packages
 .yarn-integrity
 
 oauth.js
+*.bundle.js
+*.bundle.js.map

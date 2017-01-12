@@ -6,33 +6,36 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
 import HtmlWebpackHarddiskPlugin from 'html-webpack-harddisk-plugin';
 
-exports = module.exports = function makeWebpackConfig() {
-  let config = {
-    entry: {
-      app: './client/app/app.js'
-    },
-    output: {
-      // path: path.join(__dirname, '/dist/client/'),
-      path: path.join(__dirname, '/.tmp/'),
-      publicPath: '/',
-      filename: '[name].bundle.js',
-    },
-    devtool: 'source-map',
+exports = module.exports = {
+  entry: {
+    app: './client/app/app.js'
+  },
+  output: {
+    // path: path.join(__dirname, '/dist/client/'),
+    path: path.join(__dirname, '/.tmp/'),
+    publicPath: '/',
+    filename: '[name].bundle.js',
+  },
+  devtool: 'source-map',
 
-    module: {
-      preLoaders: [],
-      loaders: [{
+  module: {
+    preLoaders: [
+    ],
+    loaders: [
+      {
         // JS LOADER
         // Reference: https://github.com/babel/babel-loader
         // Transpile .js files using babel-loader
         // Compiles ES6 and ES7 into ES5 code
         test: /\.js$/,
-        loader: 'babel',
+        loaders: ['babel', 'eslint'],
         include: [
           path.resolve(__dirname, 'client/'),
           path.resolve(__dirname, 'node_modules/lodash-es/')
-        ]
-      }, {
+        ],
+        exclude: /node_modules/
+      },
+      {
         // ASSET LOADER
         // Reference: https://github.com/webpack/file-loader
         // Copy png, jpg, jpeg, gif, svg, woff, woff2, ttf, eot files to output
@@ -57,26 +60,30 @@ exports = module.exports = function makeWebpackConfig() {
           path.resolve(__dirname, 'client/app/app.less')
         ]
       }]
-    },
+  },
 
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: 'client/_index.html',
-        filename: '../client/index.html',
-        alwaysWriteToDisk: true
-      }),
-      new HtmlWebpackHarddiskPlugin(),
-      // Reference: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-      // Define free global variables
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: '"development"'
-        }
-      })
-    ]
-  };
+  eslint: {
+    failOnWarning: true,
+    failOnError: true,
+  },
 
-  config.devServer = {
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'client/_index.html',
+      filename: '../client/index.html',
+      alwaysWriteToDisk: true
+    }),
+    new HtmlWebpackHarddiskPlugin(),
+    // Reference: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
+    // Define free global variables
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"development"'
+      }
+    })
+  ],
+
+  devServer: {
     contentBase: './client/',
     stats: {
       modules: false,
@@ -84,15 +91,14 @@ exports = module.exports = function makeWebpackConfig() {
       colors: true,
       chunk: false
     }
-  };
+  },
 
-  config.node = {
+  node: {
     global: 'window',
     process: true,
     crypto: 'empty',
     clearImmediate: false,
     setImmediate: false
-  };
+  },
 
-  return config;
 };

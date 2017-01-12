@@ -24,9 +24,8 @@ export default function(app) {
    */
   require('./auth').default(app);
 
-  // Pretty json output in developemnt mode
   if (env === 'development') {
-    const webpackConfig = require('../webpack.config.dev')();
+    const webpackConfig = require('../webpack.config.dev');
     const webpack = require('webpack');
     const compiler = webpack(webpackConfig);
     const webpackMiddleware = require('webpack-dev-middleware');
@@ -49,9 +48,8 @@ export default function(app) {
       plugins: ['bs-fullscreen-message']
     });
 
-
     compiler.plugin('done', stats => {
-      console.log('webpack done hook==========================================================');
+      console.log('webpack done hook ==========================================================');
       if (stats.hasErrors() || stats.hasWarnings()) {
         return browserSync.sockets.emit('fullscreen:message', {
           title: 'Webpack Error:',
@@ -62,6 +60,7 @@ export default function(app) {
       browserSync.reload();
     });
 
+    // Pretty json output in developemnt mode
     app.set('json spaces', 2);
   }
 }

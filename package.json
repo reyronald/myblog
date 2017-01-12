@@ -6,9 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "reset": "rimraf node_modules && npm install",
-    "eslint": "eslint --fix .",
-    "start": "nodemon server -w server",
-    "nodemon": "nodemon"
+    "eslint:fix": "eslint --fix .",
+    "start": "nodemon server -w server --exec \"eslint -- server && node\""
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +32,7 @@
     "bs-fullscreen-message": "^1.1.0",
     "ejs": "^2.5.5",
     "eslint": "^3.13.1",
+    "eslint-loader": "^1.6.1",
     "html-webpack-harddisk-plugin": "0.0.2",
     "html-webpack-plugin": "^2.26.0",
     "nodemon": "^1.11.0",
