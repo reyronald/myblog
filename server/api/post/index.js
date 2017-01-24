@@ -29,11 +29,15 @@ function handleError(res, statusCode) {
   return err => res.status(statusCode).send(err);
 }
 
-router.get('/', (req, res) => Post.find().exec()
+router.get('/', (req, res) => Post.find()
+  .populate('author', 'name -_id')
+  .exec()
   .then(entity => ok(res, entity, HttpStatus.OK))
   .catch(handleError(res)));
 
-router.get('/:id', (req, res) => Post.findById(req.params.id).exec()
+router.get('/:id', (req, res) => Post.findById(req.params.id)
+  .populate('author', 'name -_id')
+  .exec()
   .then(handleIfNotFound(res))
   .then(entity => ok(res, entity, HttpStatus.OK))
   .catch(handleError(res)));

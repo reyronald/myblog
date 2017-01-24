@@ -16,7 +16,7 @@ exports = module.exports = {
     publicPath: '/',
     filename: '[name].bundle.js',
   },
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
 
   module: {
     preLoaders: [
