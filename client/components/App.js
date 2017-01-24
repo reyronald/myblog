@@ -1,27 +1,19 @@
-import React from 'react';
-import BlogPost from './BlogPost';
+import React, {PropTypes} from 'react';
+import { IndexLink } from 'react-router';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { posts: [] };
-  }
-
-  componentDidMount() {
-    fetch('/api/post')
-      .then(r => r.json())
-      .then(posts => this.setState({ posts }));
-  }
-
   render() {
     return (
       <div>
-        {this.state.posts.map(p =>
-          <BlogPost key={p._id} post={p} />
-        )}
+        <h1><IndexLink to="/"> My Blog </IndexLink></h1>
+        {this.props.children}
       </div>
     );
   }
 }
+
+App.propTypes = {
+  children: PropTypes.element
+};
 
 export default App;

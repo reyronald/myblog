@@ -1,16 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router';
+import BlogPostFooter from './BlogPostFooter';
+
+const toUrlFriendly = str => encodeURI(str.replace(/ /g, '-'));
 
 const BlogPost = ({ post }) =>
   <div>
     <hr />
-    <h2>{post.title}</h2>
+    <h2><Link to={`/post/${post._id}?${toUrlFriendly(post.title)}`}>{post.title} ({post._id})</Link></h2>
     <p>{post.content}</p>
 
-    <div>
-      <strong>Author:</strong> {post.author.name}<br />
-      <strong>Date:</strong> {new Date(post.createdAt).toString()}<br />
-      <strong>Likes:</strong> {post.likes.length}
-    </div>
+    <BlogPostFooter post={post} />
   </div>
 ;
 

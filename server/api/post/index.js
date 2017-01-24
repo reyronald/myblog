@@ -30,6 +30,7 @@ function handleError(res, statusCode) {
 }
 
 router.get('/', (req, res) => Post.find()
+  .sort({createdAt: 'desc'})
   .populate('author', 'name -_id')
   .exec()
   .then(entity => ok(res, entity, HttpStatus.OK))
@@ -37,6 +38,7 @@ router.get('/', (req, res) => Post.find()
 
 router.get('/:id', (req, res) => Post.findById(req.params.id)
   .populate('author', 'name -_id')
+  .populate('comments.author', 'name -_id')
   .exec()
   .then(handleIfNotFound(res))
   .then(entity => ok(res, entity, HttpStatus.OK))

@@ -8,7 +8,7 @@ import HtmlWebpackHarddiskPlugin from 'html-webpack-harddisk-plugin';
 
 exports = module.exports = {
   entry: {
-    app: './client/app/app.js'
+    app: './client/index.js'
   },
   output: {
     // path: path.join(__dirname, '/dist/client/'),
@@ -57,7 +57,7 @@ exports = module.exports = {
         loaders: ['style', 'css', 'less'],
         include: [
           path.resolve(__dirname, 'node_modules/bootstrap/less/*.less'),
-          path.resolve(__dirname, 'client/app/app.less')
+          path.resolve(__dirname, 'client/app.less')
         ]
       }]
   },
