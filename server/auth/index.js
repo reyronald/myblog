@@ -4,6 +4,7 @@ import User from '../api/user/user.model';
 import {
   Strategy as GoogleStrategy
 } from 'passport-google-oauth2';
+import { setTokenCookie } from './auth.service';
 
 export default function(app) {
   app.use(passport.initialize());
@@ -60,8 +61,12 @@ export default function(app) {
   app.get('/auth/google/callback',
     passport.authenticate('google', {
       failureRedirect: '/'
-    }),
-    function(req, res) {
-      res.redirect('/account');
-    });
+    }), setTokenCookie);
+
+  app.get('/logout', (req, res) => {
+    // res.clearCookie('token');
+    res.cookie('token', '', { expires: new Date() });
+    req.logout();
+    res.redirect('/');
+  });
 }

@@ -4,6 +4,7 @@ import express from 'express';
 import path from 'path';
 import config from './environment';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 
 export default function(app) {
   const env = app.get('env');
@@ -18,6 +19,9 @@ export default function(app) {
 
   // For logging requests
   app.use(morgan('dev'));
+
+  // Cookie parser
+  app.use(cookieParser());
 
   /*
    * Middleware here...

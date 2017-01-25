@@ -9,13 +9,21 @@ const all = {
 
   root: path.normalize(path.join(__dirname, '/../../..')),
 
+  // Browser-sync port
+  browserSyncPort: process.env.BROWSER_SYNC_PORT || 3000,
+
   port: process.env.PORT || 9000,
 
-  ip: process.env.IP || '0.0.0.0',
+  ip: process.env.IP || 'localhost',
 
   seedDb: false,
 
   mongo: {},
+
+  // Secret for session, you will want to change this and make it an environment variable
+  secrets: {
+    session: 'myblog'
+  },
 };
 
 module.exports = _.merge(
