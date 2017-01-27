@@ -64,8 +64,7 @@ export default function(app) {
     }), setTokenCookie);
 
   app.get('/logout', (req, res) => {
-    // res.clearCookie('token');
-    res.cookie('token', '', { expires: new Date() });
+    res.cookie('token', '');
     req.logout();
     res.redirect('/');
   });
