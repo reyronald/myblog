@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import { IndexLink } from 'react-router';
+import { Link, IndexLink } from 'react-router';
 import Login from './Login';
 
 class App extends React.Component {
@@ -9,6 +9,8 @@ class App extends React.Component {
         <h1><IndexLink to="/"> My Blog </IndexLink></h1>
 
         <Login />
+
+        <Link to="post">New post</Link>
 
         {this.props.children}
       </div>

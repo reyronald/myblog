@@ -49,7 +49,7 @@ router.get('/:id', (req, res) => populatePost(Post.findById(req.params.id))
   .then(entity => ok(res, entity, HttpStatus.OK))
   .catch(handleError(res)));
 
-router.post('/', (req, res) => Post.create(req.body)
+router.post('/', isAuthenticated(), (req, res) => Post.create({...req.body, author: mongoose.Types.ObjectId(req.user._id) })
   .then(entity => ok(res, entity, HttpStatus.CREATED))
   .catch(handleError(res)));
 

@@ -6,12 +6,14 @@ import App from './components/App';
 import HomePage from './components/HomePage';
 import Login from './components/Login';
 import BlogPostDetail from './components/BlogPostDetail';
+import NewBlogPost from './components/NewBlogPost';
 
 render(
   <Router history={browserHistory}>
     <Route path="/" component={App} >
       <IndexRoute component={HomePage} />
       <Route path="/login" component={Login} />
+      <Route path="/post" component={NewBlogPost} />
       <Route path="/post/:id" component={BlogPostDetail} />
     </Route>
   </Router>

@@ -18,15 +18,11 @@ export default function(app) {
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
 
-  // For logging requests
   app.use(morgan('dev'));
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.use(cookieParser());
 
-  /*
-   * Middleware here...
-   */
   require('./auth').default(app);
 
   if (env === 'development') {
