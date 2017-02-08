@@ -1,9 +1,9 @@
 import React from 'react';
-import { getNameFromEmail } from '../utils';
+import User from './User';
 
 const BlogPostComment = ({ comment }) =>
   <div>
-    <strong> {comment.author.name} ({getNameFromEmail(comment.author.email)}) </strong> ({new Date(comment.createdAt).toString()}) <br />
+    <strong><User user={comment.author} /></strong> ({new Date(comment.createdAt).toString()}) <br />
 
     {comment.content}
     <br />
