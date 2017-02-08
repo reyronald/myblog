@@ -1,5 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
+import {toUrlFriendly} from '../utils';
 
 class NewBlogPost extends React.Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class NewBlogPost extends React.Component {
       },
       body: JSON.stringify({ ...post })
     }).then(r => r.json())
-      .then(p => browserHistory.push(`post/${p._id}`))
+      .then(p => browserHistory.push(`post/${p._id}/${toUrlFriendly(p.title)}`))
       .catch(err => console.error(err));
   }
 

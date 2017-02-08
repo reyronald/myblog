@@ -39,7 +39,7 @@ function populatePostWtithComments(post) {
 }
 
 router.get('/', (req, res) => populatePostWithAuthor(Post.find())
-  .sort({createdAt: 'asc'})
+  .sort({createdAt: 'desc'})
   .exec()
   .then(entity => ok(res, entity, HttpStatus.OK))
   .catch(handleError(res)));
@@ -49,7 +49,7 @@ router.get('/username/:username', (req, res) => {
     .select('_id')
     .exec()
     .then(user => populatePostWithAuthor(Post.find({ author: ObjectId(user._id) }))
-        .sort({createdAt: 'asc'})
+        .sort({createdAt: 'desc'})
         .exec()
         .then(entity => ok(res, entity, HttpStatus.OK))
         .catch(handleError(res)));
