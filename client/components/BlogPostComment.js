@@ -2,7 +2,7 @@ import React from 'react';
 
 const BlogPostComment = ({ comment }) =>
   <div>
-    <strong> {comment.author.name} </strong> ({new Date(comment.createdAt).toISOString()}) <br />
+    <strong> {comment.author.name} </strong> ({new Date(comment.createdAt).toLocaleString()}) <br />
 
     {comment.content}
     <br />

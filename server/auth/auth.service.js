@@ -16,7 +16,7 @@ export function isAuthenticated() {
     .use((req, res, next) => {
       if (req.query && req.query.hasOwnProperty('access_token')) {
         req.headers.authorization = `Bearer ${req.query.access_token}`;
-      } else if (req.cookies && req.cookies.hasOwnProperty('token') && typeof req.headers.authorization === 'undefined') {
+      } else if (req.cookies && req.cookies.token && typeof req.headers.authorization === 'undefined') {
         req.headers.authorization = `Bearer ${req.cookies.token}`;
       }
       expressJwt({ secret: config.secrets.session })(req, res, next);
@@ -24,7 +24,7 @@ export function isAuthenticated() {
     // UnauthorizedError handler.
     .use(function(err, req, res, next) {
       if (err.name === 'UnauthorizedError') {
-        return res.status(HttpStatus.UNAUTHORIZED).send(err.message);
+        return res.status(HttpStatus.UNAUTHORIZED).json({ message: err.message});
       }
       next();
     })

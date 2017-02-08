@@ -4,6 +4,8 @@ import HttpStatus from 'http-status-codes';
 import Post from './post.model';
 import jsonpatch from 'fast-json-patch';
 import express from 'express';
+import { isAuthenticated } from '../../auth/auth.service';
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -29,6 +31,11 @@ function handleError(res, statusCode) {
   return err => res.status(statusCode).send(err);
 }
 
+function populatePost(post) {
+  return post.populate('author', 'name -_id')
+    .populate('comments.author', 'name -_id');
+}
+
 router.get('/', (req, res) => Post.find()
   .sort({createdAt: 'desc'})
   .populate('author', 'name -_id')
@@ -36,9 +43,7 @@ router.get('/', (req, res) => Post.find()
   .then(entity => ok(res, entity, HttpStatus.OK))
   .catch(handleError(res)));
 
-router.get('/:id', (req, res) => Post.findById(req.params.id)
-  .populate('author', 'name -_id')
-  .populate('comments.author', 'name -_id')
+router.get('/:id', (req, res) => populatePost(Post.findById(req.params.id))
   .exec()
   .then(handleIfNotFound(res))
   .then(entity => ok(res, entity, HttpStatus.OK))
@@ -47,6 +52,18 @@ router.get('/:id', (req, res) => Post.findById(req.params.id)
 router.post('/', (req, res) => Post.create(req.body)
   .then(entity => ok(res, entity, HttpStatus.CREATED))
   .catch(handleError(res)));
+
+router.post('/:id/comment', isAuthenticated(), (req, res) => {
+  const comment = {...req.body, author: mongoose.Types.ObjectId(req.user._id)};
+  const post = Post.findByIdAndUpdate(req.params.id,
+    { $push: { comments: comment } },
+    { safe: true, upsert: true, new: true});
+
+  populatePost(post).exec()
+    .then(handleIfNotFound(res))
+    .then(entity => ok(res, entity, HttpStatus.OK))
+    .catch(handleError(res));
+});
 
 router.put('/:id', (req, res) => {
   if (req.body._id) {

@@ -5,6 +5,7 @@ import path from 'path';
 import config from './environment';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 
 export default function(app) {
   const env = app.get('env');
@@ -19,8 +20,8 @@ export default function(app) {
 
   // For logging requests
   app.use(morgan('dev'));
-
-  // Cookie parser
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
   app.use(cookieParser());
 
   /*
