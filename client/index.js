@@ -14,7 +14,8 @@ render(
       <IndexRoute component={HomePage} />
       <Route path="/login" component={Login} />
       <Route path="/post" component={NewBlogPost} />
-      <Route path="/post/:id" component={BlogPostDetail} />
+      <Route path="/post/:id/:title" component={BlogPostDetail} />
+      <Route path="/:username" component={HomePage} />
     </Route>
   </Router>
 , document.getElementById('app'));

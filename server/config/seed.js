@@ -28,3 +28,19 @@ User.findOne({ email: 'reyronald@gmail.com' })
       });
     });
   });
+
+User.findOne({ email: 'baramatzzu@gmail.com' })
+  .then(user => {
+    Post.find({}).remove()
+    .then(() => {
+      Post.create({
+        title: 'Baramazzu Post',
+        content: 'Baramazzu Post',
+        tags: ['Baramazzu Post'],
+        author: user,
+        likes: [new Like({ author: user })],
+        comments: [
+        ]
+      });
+    });
+  });

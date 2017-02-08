@@ -8,7 +8,10 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/post')
+    const { username } = this.props.params;
+    const url = !username ? 'api/post' : `api/post/username/${username}`;
+
+    fetch(url)
       .then(r => r.json())
       .then(posts => this.setState({ posts }));
   }
@@ -23,5 +26,10 @@ class HomePage extends React.Component {
     );
   }
 }
+
+HomePage.propTypes = {
+  params: React.PropTypes.object.isRequired,
+};
+
 
 export default HomePage;

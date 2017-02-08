@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const authTypes = ['google'];
 
 const UserSchema = new mongoose.Schema({
-  oauthID: Number,
+  oauthId: Number,
   name: String,
   email: {
     type: String,

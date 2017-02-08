@@ -2,25 +2,23 @@
 
 import HttpStatus from 'http-status-codes';
 import Post from './post.model';
+import User from '../user/user.model';
 import jsonpatch from 'fast-json-patch';
 import express from 'express';
 import { isAuthenticated } from '../../auth/auth.service';
 import mongoose from 'mongoose';
 
+const { ObjectId } = mongoose.Types;
 const router = express.Router();
 
 function ok(res, entity, statusCode) {
-  if (entity) {
-    return res.status(statusCode).json(entity);
-  }
-  return null;
+  return entity ? res.status(statusCode).json(entity) : null;
 }
 
 function handleIfNotFound(res) {
   return function(entity) {
     if (!entity) {
-      res.status(HttpStatus.NOT_FOUND).end();
-      return null;
+      return res.status(HttpStatus.NOT_FOUND).end();
     }
     return entity;
   };
@@ -31,35 +29,49 @@ function handleError(res, statusCode) {
   return err => res.status(statusCode).send(err);
 }
 
-function populatePost(post) {
-  return post.populate('author', 'name -_id')
-    .populate('comments.author', 'name -_id');
+function populatePostWithAuthor(post) {
+  return post.populate('author', 'name email -_id');
 }
 
-router.get('/', (req, res) => Post.find()
-  .sort({createdAt: 'desc'})
-  .populate('author', 'name -_id')
+function populatePostWtithComments(post) {
+  return populatePostWithAuthor(post)
+    .populate('comments.author', 'name email -_id');
+}
+
+router.get('/', (req, res) => populatePostWithAuthor(Post.find())
+  .sort({createdAt: 'asc'})
   .exec()
   .then(entity => ok(res, entity, HttpStatus.OK))
   .catch(handleError(res)));
 
-router.get('/:id', (req, res) => populatePost(Post.findById(req.params.id))
+router.get('/username/:username', (req, res) => {
+  User.findOne({ email: `${req.params.username}@gmail.com`})
+    .select('_id')
+    .exec()
+    .then(user => populatePostWithAuthor(Post.find({ author: ObjectId(user._id) }))
+        .sort({createdAt: 'asc'})
+        .exec()
+        .then(entity => ok(res, entity, HttpStatus.OK))
+        .catch(handleError(res)));
+});
+
+router.get('/:id', (req, res) => populatePostWtithComments(Post.findById(req.params.id))
   .exec()
   .then(handleIfNotFound(res))
   .then(entity => ok(res, entity, HttpStatus.OK))
   .catch(handleError(res)));
 
-router.post('/', isAuthenticated(), (req, res) => Post.create({...req.body, author: mongoose.Types.ObjectId(req.user._id) })
+router.post('/', isAuthenticated(), (req, res) => Post.create({...req.body, author: ObjectId(req.user._id) })
   .then(entity => ok(res, entity, HttpStatus.CREATED))
   .catch(handleError(res)));
 
 router.post('/:id/comment', isAuthenticated(), (req, res) => {
-  const comment = {...req.body, author: mongoose.Types.ObjectId(req.user._id)};
+  const comment = {...req.body, author: ObjectId(req.user._id)};
   const post = Post.findByIdAndUpdate(req.params.id,
     { $push: { comments: comment } },
     { safe: true, upsert: true, new: true});
 
-  populatePost(post).exec()
+  populatePostWtithComments(post).exec()
     .then(handleIfNotFound(res))
     .then(entity => ok(res, entity, HttpStatus.OK))
     .catch(handleError(res));
